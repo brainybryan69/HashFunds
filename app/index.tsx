@@ -1,4 +1,13 @@
-import { Text, View } from "react-native";
+import React, { useState } from "react";
+import { 
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+  SafeAreaView,
+  StatusBar,
+} from "react-native";
 
 export default function Index() {
   return (
