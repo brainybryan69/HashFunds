@@ -5,3 +5,8 @@
 expo-env.d.ts
 # @end expo-cli
 /.idea
+
+# Firebase config
+google-services.json
+firebase.js
+config/firebase.js
