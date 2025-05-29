@@ -103,3 +103,5 @@ export const globalStyles = StyleSheet.create({
     fontWeight: '500',
   },
 });
+
+export default globalStyles;
