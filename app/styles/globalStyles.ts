@@ -1,107 +1,163 @@
-import { StyleSheet } from 'react-native';
-
-export const colors = {
-  primary: '#3B82F6',
-  secondary: '#6B7280',
-  background: '#FFFFFF',
-  surface: '#F9FAFB',
-  text: '#111827',
-  textSecondary: '#374151',
-  border: '#D1D5DB',
-  placeholder: '#9CA3AF',
-};
-
-export const spacing = {
-  xs: 4,
-  sm: 8,
-  md: 16,
-  lg: 24,
-  xl: 32,
-  xxl: 48,
-};
+// styles/LoginStyles.ts
+import { StyleSheet, Platform } from 'react-native';
 
 export const globalStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: '#f5f5f5',
   },
-  content: {
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
+  loginContainer: {
     flex: 1,
-    paddingHorizontal: spacing.lg,
+    paddingHorizontal: 24,
+    paddingVertical: 40,
     justifyContent: 'center',
   },
   header: {
     alignItems: 'center',
-    marginBottom: spacing.xxl,
+    marginBottom: 40,
   },
   title: {
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: 'bold',
-    color: colors.text,
-    marginBottom: spacing.sm,
+    color: '#333',
+    marginBottom: 8,
   },
   subtitle: {
     fontSize: 16,
-    color: colors.secondary,
+    color: '#666',
   },
   form: {
-    width: '100%',
+    marginBottom: 40,
   },
   inputContainer: {
-    marginBottom: spacing.lg,
+    marginBottom: 20,
   },
   label: {
     fontSize: 16,
-    fontWeight: '500',
-    color: colors.textSecondary,
-    marginBottom: spacing.sm,
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 8,
   },
   input: {
-    height: 56,
+    backgroundColor: '#fff',
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: '#ddd',
     borderRadius: 12,
-    paddingHorizontal: spacing.md,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
     fontSize: 16,
-    backgroundColor: colors.surface,
-    color: colors.text,
+    color: '#333',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
   },
-  button: {
-    height: 56,
+  passwordContainer: {
+    position: 'relative',
+  },
+  passwordInput: {
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#ddd',
     borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    paddingRight: 50,
+    fontSize: 16,
+    color: '#333',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
+  },
+  eyeButton: {
+    position: 'absolute',
+    right: 16,
+    top: 14,
+    padding: 4,
+  },
+  eyeText: {
+    fontSize: 18,
   },
   loginButton: {
-    height: 56,
-    backgroundColor: colors.primary,
+    backgroundColor: '#007AFF',
     borderRadius: 12,
-    justifyContent: 'center',
+    paddingVertical: 16,
     alignItems: 'center',
-    marginTop: spacing.md,
-    shadowColor: colors.primary,
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 4,
+    marginTop: 10,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#007AFF',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
   },
   loginButtonText: {
-    color: '#FFFFFF',
+    color: '#fff',
     fontSize: 18,
     fontWeight: '600',
   },
   forgotPassword: {
     alignItems: 'center',
-    marginTop: spacing.lg,
+    marginTop: 20,
   },
   forgotPasswordText: {
-    color: colors.primary,
+    color: '#007AFF',
     fontSize: 16,
-    fontWeight: '500',
+  },
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  footerText: {
+    color: '#666',
+    fontSize: 16,
+  },
+  signUpText: {
+    color: '#007AFF',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
 
-export default globalStyles;
+// Optional: Create themed variations
+export const darkTheme = {
+  ...globalStyles,
+  container: {
+    ...globalStyles.container,
+    backgroundColor: '#1a1a1a',
+  },
+  title: {
+    ...globalStyles.title,
+    color: '#fff',
+  },
+  subtitle: {
+    ...globalStyles.subtitle,
+    color: '#ccc',
+  },
+  // Add more dark theme overrides as needed
+};
