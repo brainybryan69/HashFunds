@@ -25,17 +25,8 @@ function RootLayoutNav() {
 
 export default function RootLayout() {
   return (
-<<<<<<< Updated upstream
-      <Stack>
-        <Stack.Screen name="index" options={{ title: "Home" }} />
-        <Stack.Screen name="homepage" options={{ title: "Home Page" }} />
-      </Stack>
-    );
-}
-=======
     <AuthProvider>
       <RootLayoutNav />
     </AuthProvider>
   );
 }
->>>>>>> Stashed changes

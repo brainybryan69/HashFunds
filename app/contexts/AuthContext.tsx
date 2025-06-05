@@ -1,9 +1,8 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { authAPI } from '../services/api';
+
 
 interface User {
-  id: number;
+  id: string;
   email: string;
   firstName: string;
   lastName: string;
@@ -36,55 +35,40 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    checkAuthState();
+    // Firebase auth state listener will go here
+    setLoading(false); // Temporary - will be replaced with Firebase
   }, []);
-
-  const checkAuthState = async () => {
-    try {
-      const token = await AsyncStorage.getItem('userToken');
-      if (token) {
-        const userData = await authAPI.getProfile();
-        setUser(userData.user);
-      }
-    } catch (error) {
-      console.log('Auth check failed:', error);
-      await AsyncStorage.removeItem('userToken');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await authAPI.login(email, password);
-      await AsyncStorage.setItem('userToken', response.token);
-      setUser(response.user);
-      return { success: true };
+      // Firebase login will go here
+      console.log('Login function - will be replaced with Firebase');
+      return { success: false, error: 'Backend removed - Firebase setup pending' };
     } catch (error: any) {
       return { 
         success: false, 
-        error: error.response?.data?.error || 'Login failed' 
+        error: 'Login failed' 
       };
     }
   };
 
   const register = async (userData: any) => {
     try {
-      const response = await authAPI.register(userData);
-      await AsyncStorage.setItem('userToken', response.token);
-      setUser(response.user);
-      return { success: true };
+      // Firebase registration will go here
+      console.log('Register function - will be replaced with Firebase');
+      return { success: false, error: 'Backend removed - Firebase setup pending' };
     } catch (error: any) {
       return { 
         success: false, 
-        error: error.response?.data?.error || 'Registration failed' 
+        error: 'Registration failed' 
       };
     }
   };
 
   const logout = async () => {
-    await AsyncStorage.removeItem('userToken');
+    // Firebase logout will go here
     setUser(null);
+    console.log('Logout function - will be replaced with Firebase');
   };
 
   const value = {
