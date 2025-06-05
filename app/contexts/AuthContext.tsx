@@ -1,5 +1,13 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-
+import { 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged,
+  User as FirebaseUser 
+} from 'firebase/auth';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { auth, db } from '../config/firebase';
 
 interface User {
   id: string;
@@ -11,9 +19,16 @@ interface User {
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
-  register: (userData: any) => Promise<{ success: boolean; error?: string }>;
+  register: (userData: RegisterData) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
   loading: boolean;
+}
+
+interface RegisterData {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -35,40 +50,80 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Firebase auth state listener will go here
-    setLoading(false); // Temporary - will be replaced with Firebase
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
+      if (firebaseUser) {
+        // User is signed in, get their profile from Firestore
+        try {
+          const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            setUser({
+              id: firebaseUser.uid,
+              email: firebaseUser.email!,
+              firstName: userData.firstName,
+              lastName: userData.lastName,
+            });
+          }
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
+      } else {
+        // User is signed out
+        setUser(null);
+      }
+      setLoading(false);
+    });
+
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const register = async (userData: RegisterData) => {
     try {
-      // Firebase login will go here
-      console.log('Login function - will be replaced with Firebase');
-      return { success: false, error: 'Backend removed - Firebase setup pending' };
+      // Create user account
+      const userCredential = await createUserWithEmailAndPassword(
+        auth, 
+        userData.email, 
+        userData.password
+      );
+      
+      // Store additional user data in Firestore
+      await setDoc(doc(db, 'users', userCredential.user.uid), {
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        email: userData.email,
+        createdAt: new Date().toISOString(),
+      });
+
+      return { success: true };
     } catch (error: any) {
+      console.error('Registration error:', error);
       return { 
         success: false, 
-        error: 'Login failed' 
+        error: error.message || 'Registration failed' 
       };
     }
   };
 
-  const register = async (userData: any) => {
+  const login = async (email: string, password: string) => {
     try {
-      // Firebase registration will go here
-      console.log('Register function - will be replaced with Firebase');
-      return { success: false, error: 'Backend removed - Firebase setup pending' };
+      await signInWithEmailAndPassword(auth, email, password);
+      return { success: true };
     } catch (error: any) {
+      console.error('Login error:', error);
       return { 
         success: false, 
-        error: 'Registration failed' 
+        error: error.message || 'Login failed' 
       };
     }
   };
 
   const logout = async () => {
-    // Firebase logout will go here
-    setUser(null);
-    console.log('Logout function - will be replaced with Firebase');
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   };
 
   const value = {
