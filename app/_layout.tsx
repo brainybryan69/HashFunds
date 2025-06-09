@@ -1,10 +1,18 @@
-import React from 'react';
-import { Stack } from 'expo-router';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { Tabs, useRouter } from 'expo-router';
+import React, { useEffect } from 'react';
+import { useAuth } from './contexts/AuthContext';
 import { ActivityIndicator, View } from 'react-native';
 
-function RootLayoutNav() {
+export default function TabLayout() {
   const { user, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      // Redirect to login if user is not authenticated
+      router.replace('/Login');
+    }
+  }, [loading, user, router]);
 
   if (loading) {
     return (
@@ -14,19 +22,30 @@ function RootLayoutNav() {
     );
   }
 
-  return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="Login" options={{ headerShown: false }} />
-      <Stack.Screen name="Register" options={{ headerShown: false }} />
-    </Stack>
-  );
-}
+  if (!user) {
+    return null; // Will redirect to login via useEffect
+  }
 
-export default function RootLayout() {
   return (
-    <AuthProvider>
-      <RootLayoutNav />
-    </AuthProvider>
+    <Tabs screenOptions={{ headerShown: false }}>
+      <Tabs.Screen 
+        name="index" 
+        options={{
+          title: 'Home',
+          tabBarIcon: ({ color, size }) => (
+            <View style={{ width: size, height: size, backgroundColor: color }} />
+          ),
+        }}
+      />
+      <Tabs.Screen 
+        name="profile" 
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ color, size }) => (
+            <View style={{ width: size, height: size, backgroundColor: color }} />
+          ),
+        }}
+      />
+    </Tabs>
   );
 }

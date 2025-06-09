@@ -1,6 +1,6 @@
 import { Tabs, useRouter } from 'expo-router';
 import React, { useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext'; // ← Fixed path
 import { ActivityIndicator, View } from 'react-native';
 
 export default function TabLayout() {
@@ -9,10 +9,9 @@ export default function TabLayout() {
 
   useEffect(() => {
     if (!loading && !user) {
-      // Redirect to login if user is not authenticated
-      router.replace('/Login');
+      router.replace('/(auth)/Login');
     }
-  }, [user, loading, router]);
+  }, [loading, user, router]);
 
   if (loading) {
     return (
@@ -23,19 +22,19 @@ export default function TabLayout() {
   }
 
   if (!user) {
-    return null; // Will redirect to login via useEffect
+    return null;
   }
 
   return (
     <Tabs screenOptions={{ headerShown: false }}>
-      <Tabs.Screen
-        name="index"
+      <Tabs.Screen 
+        name="index" 
         options={{
           title: 'Home',
         }}
       />
-      <Tabs.Screen
-        name="profile"
+      <Tabs.Screen 
+        name="profile" 
         options={{
           title: 'Profile',
         }}

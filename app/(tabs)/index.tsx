@@ -1,36 +1,21 @@
-import { Text, View, StyleSheet } from "react-native";
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import { useAuth } from '../contexts/AuthContext';
-import { useRouter } from 'expo-router';
-import { useEffect } from 'react';
 
-export default function Index() {
-  const { user, loading } = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!loading && !user) {
-      router.replace('/Login');
-    }
-  }, [user, loading, router]);
-
-  if (loading || !user) {
-    return null;
-  }
+export default function HomeScreen() {
+  const { user } = useAuth();
 
   return (
     <View style={styles.container}>
-      <Text style={styles.welcome}>
-        Welcome back, {user?.firstName}!
-      </Text>
-      <Text style={styles.subtitle}>
-        HEADER
-      </Text>
-      
-      <View style={styles.content}>
-        <Text style={styles.contentText}>
-          balance card goes here
+      <Text style={styles.title}>Welcome to HashFunds!</Text>
+      {user && (
+        <Text style={styles.subtitle}>
+          Hello, {user.firstName} {user.lastName}
         </Text>
-      </View>
+      )}
+      <Text style={styles.description}>
+        Your investment dashboard will be here soon.
+      </Text>
     </View>
   );
 }
@@ -38,32 +23,25 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "flex-start",
-    alignItems: "center",
-    padding: 20,
-    backgroundColor: '#fff',
-    paddingTop: 50,
-  },
-  welcome: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#666',
-    marginBottom: 30,
-    textAlign: 'center',
-  },
-  content: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#fff',
+    padding: 20,
   },
-  contentText: {
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: '#333',
+  },
+  subtitle: {
+    fontSize: 18,
+    marginBottom: 20,
+    color: '#666',
+  },
+  description: {
     fontSize: 16,
     textAlign: 'center',
-    color: '#333',
+    color: '#888',
   },
 });
