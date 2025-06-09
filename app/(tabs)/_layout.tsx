@@ -1,6 +1,6 @@
 import { Tabs, useRouter } from 'expo-router';
 import React, { useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext'; // ← Fixed path
+import { useAuth } from '../../contexts/AuthContext'; // ← Fixed path
 import { ActivityIndicator, View } from 'react-native';
 
 export default function TabLayout() {

@@ -10,7 +10,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { globalStyles } from './styles/globalStyles'; // Adjust the path as necessary
+import { globalStyles } from '../styles/globalStyles'; // Adjust the path as necessary
 
 export default function HomeScreen() {
   const [username, setUsername] = useState('');
