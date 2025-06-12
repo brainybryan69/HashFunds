@@ -10,3 +10,4 @@ expo-env.d.ts
 google-services.json
 firebase.js
 config/firebase.js
+node_modules
